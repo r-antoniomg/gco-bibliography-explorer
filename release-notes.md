@@ -4,7 +4,7 @@ title: Release notes
 permalink: /release-notes/
 ---
 
-# 2026-07-30 : First release
+# 2026-07-30 : First release (v 0.1)
 
 ## Implemented
 * Basic site structure built:
@@ -19,3 +19,4 @@ permalink: /release-notes/
 ## Known limitations
 * Live API requests
 * Visual appearance of prototype interface
+* Retrieve limited to 100 records per collection
