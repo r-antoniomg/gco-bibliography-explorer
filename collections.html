@@ -1,0 +1,68 @@
+---
+layout: default
+title: Collections
+permalink: /collections/
+---
+
+<h1>Zotero Collections Test</h1>
+
+<p>
+This page retrieves collections from the Zotero API and displays their
+names, keys, and parent relationships.
+</p>
+
+<div id="collections">
+  Loading collections...
+</div>
+
+<script>
+fetch('https://api.zotero.org/groups/6606998/collections?format=json&limit=100')
+  .then(response => response.json())
+  .then(data => {
+
+    let html = '';
+
+    html += '<p><strong>Collections found:</strong> ' + data.length + '</p>';
+
+    data.forEach(collection => {
+
+      const record = collection.data;
+
+      const name = record.name || 'Unnamed Collection';
+      const key = record.key || '';
+      const parent = record.parentCollection || 'Top-level collection';
+
+      html += `
+        <article class="collection-record">
+
+          <h2>${name}</h2>
+
+          <p>
+            <strong>Collection Key:</strong>
+            ${key}
+          </p>
+
+          <p>
+            <strong>Parent Collection:</strong>
+            ${parent}
+          </p>
+
+          <hr>
+
+        </article>
+      `;
+
+    });
+
+    document.getElementById('collections').innerHTML = html;
+
+  })
+  .catch(error => {
+
+    document.getElementById('collections').innerHTML =
+      'Error loading collections';
+
+    console.error(error);
+
+  });
+</script>

@@ -1,0 +1,115 @@
+---
+layout: default
+title: Tag
+permalink: /tag/
+nav_exclude: true
+---
+
+<h1 id="tag-title">Loading tag...</h1>
+
+<div id="tag-records">
+  Loading records...
+</div>
+
+<script>
+const params = new URLSearchParams(window.location.search);
+const tagName = params.get('name');
+
+function formatCreators(creators) {
+  if (!creators || creators.length === 0) {
+    return 'None';
+  }
+
+  return creators
+    .map(c => {
+      if (c.name) return c.name;
+      return [c.firstName, c.lastName]
+        .filter(Boolean)
+        .join(' ');
+    })
+    .join('; ');
+}
+
+function formatTags(tags) {
+  if (!tags || tags.length === 0) {
+    return 'None';
+  }
+
+  return tags
+    .map(t => {
+      const safeTag = encodeURIComponent(t.tag);
+      return `<button type="button" onclick="window.location.href='/tag/?name=${safeTag}'">${t.tag}</button>`;
+    })
+    .join(' ');
+}
+
+if (!tagName) {
+  document.getElementById('tag-title').textContent = 'No tag specified';
+  document.getElementById('tag-records').innerHTML = '<p>Please provide a tag name in the URL.</p>';
+} else {
+
+  document.getElementById('tag-title').textContent = `Tag: ${tagName}`;
+
+  const itemsUrl = 'https://api.zotero.org/groups/6606998/items/top?format=json&limit=100';
+
+  fetch(itemsUrl)
+    .then(response => response.json())
+    .then(items => {
+
+      const matchingItems = items.filter(item => {
+        const tags = item.data.tags || [];
+        return tags.some(t => t.tag === tagName);
+      });
+
+      let html = `
+        <p>
+          Showing records across the bibliography tagged
+          <strong>${tagName}</strong>.
+        </p>
+
+        <p><strong>Records:</strong> ${matchingItems.length}</p>
+      `;
+
+      if (matchingItems.length === 0) {
+        html += '<p>No records found for this tag.</p>';
+      }
+
+      matchingItems.forEach(item => {
+
+        const record = item.data;
+
+        const title = record.title || 'Untitled';
+        const itemType = record.itemType || '';
+        const date = record.date || '';
+        const abstractNote = record.abstractNote || '';
+        const authors = formatCreators(record.creators);
+        const tagButtons = formatTags(record.tags);
+
+        html += `
+          <article class="bib-record">
+            <h2>${title}</h2>
+
+            <p><strong>Authors:</strong> ${authors}</p>
+
+            <p><strong>Date:</strong> ${date}</p>
+
+            <p><strong>Item Type:</strong> ${itemType}</p>
+
+            <p><strong>Tags:</strong> ${tagButtons}</p>
+
+            <p><strong>Abstract:</strong> ${abstractNote || 'No abstract'}</p>
+
+            <hr>
+          </article>
+        `;
+      });
+
+      document.getElementById('tag-records').innerHTML = html;
+    })
+    .catch(error => {
+      document.getElementById('tag-title').textContent = 'Error';
+      document.getElementById('tag-records').innerHTML = '<p>Error loading tag data.</p>';
+      console.error(error);
+    });
+}
+</script>

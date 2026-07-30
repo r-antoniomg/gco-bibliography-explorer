@@ -1,0 +1,31 @@
+---
+layout: default
+title: API Test
+permalink: /api-test/
+nav_exclude: true
+---
+
+<h1>Zotero API Test</h1>
+
+<div id="results">
+  Loading...
+</div>
+
+<script>
+fetch('https://api.zotero.org/groups/6606998/items/top?format=json')
+  .then(response => response.json())
+  .then(data => {
+
+    document.getElementById('results').innerHTML =
+      '<pre>' + JSON.stringify(data[0].data, null, 2) + '</pre>';
+
+  })
+  .catch(error => {
+
+    document.getElementById('results').innerHTML =
+      'Error loading Zotero data';
+
+    console.error(error);
+
+  });
+</script>

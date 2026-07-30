@@ -1,0 +1,142 @@
+---
+layout: default
+title: Collection
+permalink: /collection/
+---
+
+<h1 id="collection-title">Loading collection...</h1>
+
+<div id="collection-controls"></div>
+<div id="collection-records">Loading records...</div>
+
+<script>
+const params = new URLSearchParams(window.location.search);
+const collectionKey = params.get('key');
+
+let allItems = [];
+let currentCollectionName = '';
+let currentTagFilter = '';
+let currentSort = 'title';
+
+function formatCreators(creators) {
+  if (!creators || creators.length === 0) return 'None';
+  return creators.map(c => c.name || [c.firstName,c.lastName].filter(Boolean).join(' ')).join('; ');
+}
+
+function buildControls() {
+  const tags = [...new Set(
+    allItems.flatMap(item => (item.data.tags || []).map(t => t.tag))
+  )].sort();
+
+  let tagOptions = '<option value="">All Tags</option>';
+  tags.forEach(tag => {
+    tagOptions += `<option value="${tag}" ${currentTagFilter===tag?'selected':''}>${tag}</option>`;
+  });
+
+  document.getElementById('collection-controls').innerHTML = `
+    <div style="margin-bottom:1.5rem;padding:1rem;border:1px solid #ddd;">
+      <h2>Sort and filter titles inside the <strong>${currentCollectionName}</strong> collection</h2>
+
+      <p>
+        <label><strong>Sort by:</strong></label>
+        <select onchange="setSort(this.value)">
+          <option value="title" ${currentSort==='title'?'selected':''}>Title</option>
+          <option value="author" ${currentSort==='author'?'selected':''}>Author</option>
+          <option value="year" ${currentSort==='year'?'selected':''}>Year</option>
+        </select>     
+      </p>
+
+      <p>
+        <label><strong>Filter by tag:</strong></label>
+        <select onchange="setTagFilter(this.value)">
+          ${tagOptions}
+        </select>
+        <button type='button' onclick='clearFilters()'>Clear filters</button>
+      </p>
+    </div>`;
+}
+
+function setTagFilter(tag) {
+  currentTagFilter = tag;
+  render();
+}
+
+function setSort(sort) {
+  currentSort = sort;
+  render();
+}
+
+function render() {
+  buildControls();
+
+  let items = [...allItems];
+
+  if (currentTagFilter) {
+    items = items.filter(item =>
+      (item.data.tags || []).some(t => t.tag === currentTagFilter)
+    );
+  }
+
+  items.sort((a,b) => {
+    const ra=a.data, rb=b.data;
+
+    if (currentSort==='author') {
+      return formatCreators(ra.creators).localeCompare(formatCreators(rb.creators));
+    }
+
+    if (currentSort==='year') {
+      return (ra.date || '').localeCompare(rb.date || '');
+    }
+
+    return (ra.title || '').localeCompare(rb.title || '');
+  });
+
+  let html = `<p><strong>Records:</strong> ${items.length}</p>`;
+
+  items.forEach(item => {
+    const r = item.data;
+
+    const tagButtons = (r.tags || []).map(t => {
+      const safe = encodeURIComponent(t.tag);
+      return `<button type="button" onclick="window.location.href='/tag/?name=${safe}'">${t.tag}</button>`;
+    }).join(' ') || 'None';
+
+    html += `
+      <article class="bib-record">
+        <h2>${r.title || 'Untitled'}</h2>
+
+        <p><strong>Authors:</strong> ${formatCreators(r.creators)}</p>
+        <p><strong>Date:</strong> ${r.date || ''}</p>
+        
+        <p><em>Explore this topic across all collections:</em><br>
+        ${tagButtons}</p>
+
+        <p><strong>Abstract:</strong> ${r.abstractNote || 'No abstract'}</p>
+
+        <hr>
+      </article>`;
+  });
+
+  document.getElementById('collection-records').innerHTML = html;
+}
+
+if (!collectionKey) {
+  document.getElementById('collection-title').textContent = 'No collection specified';
+} else {
+  Promise.all([
+    fetch(`https://api.zotero.org/groups/6606998/collections/${collectionKey}?format=json`).then(r=>r.json()),
+    fetch(`https://api.zotero.org/groups/6606998/collections/${collectionKey}/items/top?format=json&limit=100`).then(r=>r.json())
+  ])
+  .then(([collection,items]) => {
+    currentCollectionName = collection.data.name || 'Unnamed Collection';
+    document.getElementById('collection-title').textContent = currentCollectionName;
+    allItems = items;
+    render();
+  })
+  .catch(error => {
+    document.getElementById('collection-title').textContent = 'Error';
+    document.getElementById('collection-records').innerHTML = '<p>Error loading collection data.</p>';
+    console.error(error);
+  });
+}
+</script>
