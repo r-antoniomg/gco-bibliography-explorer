@@ -12,6 +12,7 @@ permalink: /collection/
 <script>
 const params = new URLSearchParams(window.location.search);
 const collectionKey = params.get('key');
+const BASE_URL = '{{ site.baseurl }}';
 
 let allItems = [];
 let currentCollectionName = '';
