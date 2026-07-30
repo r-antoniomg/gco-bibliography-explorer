@@ -96,7 +96,7 @@ fetch(COLLECTIONS_URL)
 
     results.forEach(collection => {
       html += `
-      <a class="collection-card" href="/collection/?key=${collection.key}">
+      <a class="collection-card" href="${BASE_URL}/collection/?key=${collection.key}">
         <div class="collection-title">${collection.name}</div>
         <div class="collection-count">Item count: ${collection.count}</div>
       </a>`;
@@ -106,7 +106,7 @@ fetch(COLLECTIONS_URL)
 
 html += `
   <div style="margin-top: 2rem;">
-    <a class="collection-card" href="/topics/">
+    <a class="collection-card" href="${BASE_URL}/topics/">
 
       <div class="collection-title">
         Explore the bibliography by topic

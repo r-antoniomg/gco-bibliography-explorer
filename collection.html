@@ -98,7 +98,7 @@ function render() {
 
     const tagButtons = (r.tags || []).map(t => {
       const safe = encodeURIComponent(t.tag);
-      return `<button type="button" onclick="window.location.href='/tag/?name=${safe}'">${t.tag}</button>`;
+      return `<button type="button" onclick="window.location.href='${BASE_URL}/tag/?name=${safe}'">${t.tag}</button>`;
     }).join(' ') || 'None';
 
     html += `

@@ -38,7 +38,7 @@ function formatTags(tags) {
   return tags
     .map(t => {
       const safeTag = encodeURIComponent(t.tag);
-      return `<button type="button" onclick="window.location.href='/tag/?name=${safeTag}'">${t.tag}</button>`;
+      return `<button type="button" onclick="window.location.href='${BASE_URL}/tag/?name=${safeTag}'">${t.tag}</button>`;
     })
     .join(' ');
 }
