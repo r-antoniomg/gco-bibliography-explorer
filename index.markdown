@@ -3,7 +3,7 @@ layout: default
 title: Home
 ---
 
-# GCO Annotated Bibliography
+# German Canadiana Online (GCO) Bibliography
 
 The German Canadiana in Ontario Bibliography (GCO) was started in 2007 and is a project of the University of Waterloo Libraries. It is updated continuously, as new information becomes available.
 
