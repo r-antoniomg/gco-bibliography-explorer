@@ -21,8 +21,8 @@
 title: German Canadiana in Ontario (GCO) Bibliography
 description: >- # this means to ignore newlines until "baseurl:"
   The German Canadiana Bibliography in Ontario (GCO) was started in 2007 and is a project of the University of Waterloo Libraries. It is updated continuously, as new information becomes available.
-baseurl: "" # the subpath of your site, e.g. /blog
-url: "" # the base hostname & protocol for your site, e.g. http://example.com
+baseurl: "/gco-bibliography-explorer" # the subpath of your site, e.g. /blog
+url: "https://r-antoniomg.github.io" # the base hostname & protocol for your site, e.g. http://example.com
 # twitter_username: jekyllrb
 github_username:  r-antoniomg
 
