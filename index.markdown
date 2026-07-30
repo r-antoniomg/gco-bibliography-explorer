@@ -71,6 +71,7 @@ The German Canadiana in Ontario Bibliography (GCO) was started in 2007 and is a 
 
 <script>
 const COLLECTIONS_URL = 'https://api.zotero.org/groups/6606998/collections?format=json&limit=100';
+const BASE_URL = '{{ site.baseurl }}';
 
 fetch(COLLECTIONS_URL)
 .then(response => response.json())
