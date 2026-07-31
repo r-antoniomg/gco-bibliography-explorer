@@ -172,14 +172,20 @@ function formatTags(tags) {
 
   const tagButtons = tags
     .map(tagObject => {
-      const tag = tagObject.tag || '';
+      const rawTag = tagObject.tag || '';
 
-      if (!tag) {
+      if (!rawTag) {
         return '';
       }
 
-      const encodedTag = encodeURIComponent(tag);
-      const safeTag = escapeHtml(tag);
+      const normalizedTag = normalizeTag(rawTag);
+
+      if (!normalizedTag) {
+        return '';
+      }
+
+      const encodedTag = encodeURIComponent(normalizedTag);
+      const safeTag = escapeHtml(normalizedTag);
 
       return `<button type="button" onclick="window.location.href='${BASE_URL}/tag/?name=${encodedTag}'">${safeTag}</button>`;
     })
