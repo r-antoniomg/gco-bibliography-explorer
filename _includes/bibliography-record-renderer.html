@@ -84,6 +84,12 @@ function escapeHtml(value) {
     .replace(/"/g, '&quot;');
 }
 
+function normalizeTag(tag) {
+  return String(tag || '')
+    .trim()
+    .replace(/\s+/g, ' ');
+}
+
 function normalizeZoteroRecord(item) {
   const record = item.data || {};
 
