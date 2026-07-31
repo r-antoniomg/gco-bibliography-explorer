@@ -33,8 +33,35 @@ plugins:
 
 # Header pages
 header_pages:
-  - about.markdown
+  - about.md
   - release-notes.md
+
+# Zotero library : Enter the Zotero library key that you want to use.
+
+zotero:
+  group_id: 6606998
+
+# Record fields for public display
+
+record_display:
+  show_zotero_key: true # The Zotero key can be used to link a record from the bibliography to blog posts, essays,
+                        # or other scholarly outputs that you write within your bibliography site. You can set this value
+                        # to 'false' if you don't want the zotero_key to display to the public.
+  fields:
+    - title
+    - creators
+    - date
+    - publicationTitle
+    - bookTitle
+    - volume
+    - issue
+    - pages
+    - place
+    - publisher
+    - language
+    - url
+    - tags
+    - abstractNote
 
 # Exclude from processing.
 # The following items will not be processed, by default.
