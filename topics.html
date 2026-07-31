@@ -30,17 +30,50 @@ Tag size reflects the number of records associated with the topic.
 </style>
 
 <script>
-  const BASE_URL = '{{ site.baseurl }}';
+const BASE_URL = '{{ site.baseurl }}';
 
-fetch('https://api.zotero.org/groups/6606998/items/top?format=json&limit=100')
-  .then(response => response.json())
+function normalizeTag(tag) {
+  return String(tag || '')
+    .trim()
+    .replace(/\s+/g, ' ');
+}
+
+async function fetchAllTopItems() {
+  const limit = 100;
+  let start = 0;
+  let allItems = [];
+
+  while (true) {
+    const url = `https://api.zotero.org/groups/6606998/items/top?format=json&limit=${limit}&start=${start}`;
+    const response = await fetch(url);
+    const items = await response.json();
+
+    allItems = allItems.concat(items);
+
+    if (items.length < limit) {
+      break;
+    }
+
+    start += limit;
+  }
+
+  return allItems;
+}
+
+fetchAllTopItems()
   .then(items => {
 
     const tagCounts = {};
 
     items.forEach(item => {
       (item.data.tags || []).forEach(tag => {
-        tagCounts[tag.tag] = (tagCounts[tag.tag] || 0) + 1;
+        const normalizedTag = normalizeTag(tag.tag);
+
+        if (!normalizedTag) {
+          return;
+        }
+
+        tagCounts[normalizedTag] = (tagCounts[normalizedTag] || 0) + 1;
       });
     });
 
