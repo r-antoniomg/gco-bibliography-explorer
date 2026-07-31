@@ -47,21 +47,35 @@ record_display:
   show_zotero_key: true # The Zotero key can be used to link a record from the bibliography to blog posts, essays,
                         # or other scholarly outputs that you write within your bibliography site. You can set this value
                         # to 'false' if you don't want the zotero_key to display to the public.
-  fields:
+  display_fields:
     - title
     - creators
-    - date
+
+    # Publication/source
     - publicationTitle
     - bookTitle
     - volume
     - issue
     - pages
+
+    # Publication details
     - place
     - publisher
+    - date
     - language
+
+    # Access/identifiers
     - url
+    - doi
+    - isbn
+    - issn
+    - zoteroKey
+
+    # Topics
     - tags
-    - abstractNote
+
+    # Description
+    - abstract
 
 # Exclude from processing.
 # The following items will not be processed, by default.
