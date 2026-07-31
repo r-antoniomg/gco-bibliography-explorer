@@ -53,6 +53,25 @@ const RECORD_FIELD_LABELS = {
   abstract: 'Abstract'
 };
 
+/*
+  In Zotero data, the pages field can mean different things depending on item type.
+  For articles and chapters, pages usually indicates the location of the contribution
+  within a larger work. For books, it may represent extent or physical description.
+  The shared renderer therefore displays pages only for item types where pages are
+  likely to be a page range or location within a container.
+*/
+const ITEM_TYPES_WITH_PAGE_RANGES = [
+  'journalArticle',
+  'bookSection',
+  'conferencePaper',
+  'magazineArticle',
+  'newspaperArticle',
+  'encyclopediaArticle',
+  'dictionaryEntry',
+  'report',
+  'thesis'
+];
+
 function escapeHtml(value) {
   if (value === null || value === undefined) {
     return '';
@@ -62,8 +81,7 @@ function escapeHtml(value) {
     .replace(/&/g, '&amp;')
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#39;');
+    .replace(/"/g, '&quot;');
 }
 
 function normalizeZoteroRecord(item) {
@@ -71,6 +89,7 @@ function normalizeZoteroRecord(item) {
 
   return {
     zoteroKey: item.key || record.key || '',
+    itemType: record.itemType || '',
     title: record.title || '',
     creators: record.creators || [],
     publicationTitle: record.publicationTitle || '',
@@ -97,6 +116,10 @@ function hasRenderableValue(value) {
   }
 
   return value !== null && value !== undefined && String(value).trim() !== '';
+}
+
+function shouldDisplayPages(normalizedRecord) {
+  return ITEM_TYPES_WITH_PAGE_RANGES.includes(normalizedRecord.itemType);
 }
 
 function formatCreators(creators) {
@@ -190,6 +213,10 @@ function renderRecordField(fieldName, normalizedRecord) {
   }
 
   if (fieldName === 'zoteroKey' && !SHOW_ZOTERO_KEY) {
+    return '';
+  }
+
+  if (fieldName === 'pages' && !shouldDisplayPages(normalizedRecord)) {
     return '';
   }
 
