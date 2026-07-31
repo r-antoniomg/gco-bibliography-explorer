@@ -62,6 +62,29 @@ The German Canadiana in Ontario Bibliography (GCO) was started in 2007 and is a 
 const COLLECTIONS_URL = 'https://api.zotero.org/groups/6606998/collections?format=json&limit=100';
 const BASE_URL = '{{ site.baseurl }}';
 
+async function fetchAllCollectionItems(collectionKey) {
+  const limit = 100;
+  let start = 0;
+  let allItems = [];
+
+  while (true) {
+    const url = `https://api.zotero.org/groups/6606998/collections/${collectionKey}/items/top?format=json&limit=${limit}&start=${start}`;
+
+    const response = await fetch(url);
+    const items = await response.json();
+
+    allItems = allItems.concat(items);
+
+    if (items.length < limit) {
+      break;
+    }
+
+    start += limit;
+  }
+
+  return allItems;
+}
+
 fetch(COLLECTIONS_URL)
   .then(response => response.json())
   .then(collections => {
@@ -71,8 +94,7 @@ fetch(COLLECTIONS_URL)
     const requests = collections.map(collection => {
       const key = collection.key;
 
-      return fetch(`https://api.zotero.org/groups/6606998/collections/${key}/items/top?format=json&limit=100`)
-        .then(response => response.json())
+      return fetchAllCollectionItems(key)
         .then(items => ({
           name: collection.data.name,
           key: key,
