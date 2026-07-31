@@ -56,7 +56,8 @@ record_display:
     - bookTitle
     - volume
     - issue
-    - pages
+    # - pages ## The pages were excluded from the GCO test because of identified issues in metadata quality, you may uncomment this field
+    # for your own project if your metadata quality is more consistent.
 
     # Publication details
     - place
