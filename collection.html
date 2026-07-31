@@ -5,7 +5,9 @@ permalink: /collection/
 ---
 
 <h1 id="collection-title">Loading collection...</h1>
+
 <div id="collection-controls"></div>
+
 <div id="collection-records">Loading records...</div>
 
 <script>
@@ -19,12 +21,37 @@ let currentSort = 'title';
 
 {% include bibliography-record-renderer.html %}
 
+async function fetchAllCollectionItems(collectionKey) {
+  const limit = 100;
+  let start = 0;
+  let allItems = [];
+
+  while (true) {
+    const url = `https://api.zotero.org/groups/6606998/collections/${collectionKey}/items/top?format=json&limit=${limit}&start=${start}`;
+    const response = await fetch(url);
+    const items = await response.json();
+
+    allItems = allItems.concat(items);
+
+    if (items.length < limit) {
+      break;
+    }
+
+    start += limit;
+  }
+
+  return allItems;
+}
+
 function buildControls() {
   const tags = [...new Set(
-    allItems.flatMap(item => (item.data.tags || []).map(t => t.tag))
-  )].sort();
+    allItems.flatMap(item => (item.data.tags || []).map(t => normalizeTag(t.tag)))
+  )]
+    .filter(Boolean)
+    .sort();
 
   let tagOptions = '<option value="">All Tags</option>';
+
   tags.forEach(tag => {
     tagOptions += `<option value="${tag}" ${currentTagFilter === tag ? 'selected' : ''}>${tag}</option>`;
   });
@@ -87,7 +114,7 @@ function render() {
 
   if (currentTagFilter) {
     items = items.filter(item =>
-      (item.data.tags || []).some(t => t.tag === currentTagFilter)
+      (item.data.tags || []).some(t => normalizeTag(t.tag) === currentTagFilter)
     );
   }
 
@@ -121,7 +148,7 @@ if (!collectionKey) {
 } else {
   Promise.all([
     fetch(`https://api.zotero.org/groups/6606998/collections/${collectionKey}?format=json`).then(response => response.json()),
-    fetch(`https://api.zotero.org/groups/6606998/collections/${collectionKey}/items/top?format=json&limit=100`).then(response => response.json())
+    fetchAllCollectionItems(collectionKey)
   ])
   .then(([collection, items]) => {
     currentCollectionName = collection.data.name || 'Unnamed Collection';
