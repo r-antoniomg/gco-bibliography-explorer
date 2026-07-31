@@ -1,0 +1,250 @@
+/*
+  Shared bibliography record renderer
+  -----------------------------------
+  Include this file inside a <script> block on pages that render Zotero records:
+
+  {% include bibliography-record-renderer.html %}
+
+  Expected _config.yml structure:
+
+  record_display:
+    show_zotero_key: true
+    display_fields:
+      - title
+      - creators
+      - publicationTitle
+      - bookTitle
+      - volume
+      - issue
+      - pages
+      - place
+      - publisher
+      - date
+      - language
+      - url
+      - doi
+      - isbn
+      - issn
+      - zoteroKey
+      - tags
+      - abstract
+*/
+
+const RECORD_DISPLAY_FIELDS = {{ site.record_display.display_fields | default: "title,creators,publicationTitle,bookTitle,volume,issue,pages,place,publisher,date,language,url,doi,isbn,issn,zoteroKey,tags,abstract" | jsonify }};
+const SHOW_ZOTERO_KEY = {{ site.record_display.show_zotero_key | default: true | jsonify }};
+const BASE_URL = "{{ site.baseurl }}";
+
+const RECORD_FIELD_LABELS = {
+  title: 'Title',
+  creators: 'Creators',
+  publicationTitle: 'Publication title',
+  bookTitle: 'Book title',
+  volume: 'Volume',
+  issue: 'Issue',
+  pages: 'Pages',
+  place: 'Place',
+  publisher: 'Publisher',
+  date: 'Date',
+  language: 'Language',
+  url: 'URL',
+  doi: 'DOI',
+  isbn: 'ISBN',
+  issn: 'ISSN',
+  zoteroKey: 'Zotero item key',
+  tags: 'Topics',
+  abstract: 'Abstract'
+};
+
+function escapeHtml(value) {
+  if (value === null || value === undefined) {
+    return '';
+  }
+
+  return String(value)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+function normalizeZoteroRecord(item) {
+  const record = item.data || {};
+
+  return {
+    zoteroKey: item.key || record.key || '',
+    title: record.title || '',
+    creators: record.creators || [],
+    publicationTitle: record.publicationTitle || '',
+    bookTitle: record.bookTitle || '',
+    volume: record.volume || '',
+    issue: record.issue || '',
+    pages: record.pages || '',
+    place: record.place || '',
+    publisher: record.publisher || '',
+    date: record.date || '',
+    language: record.language || '',
+    url: record.url || '',
+    doi: record.DOI || record.doi || '',
+    isbn: record.ISBN || record.isbn || '',
+    issn: record.ISSN || record.issn || '',
+    tags: record.tags || [],
+    abstract: record.abstractNote || ''
+  };
+}
+
+function hasRenderableValue(value) {
+  if (Array.isArray(value)) {
+    return value.length > 0;
+  }
+
+  return value !== null && value !== undefined && String(value).trim() !== '';
+}
+
+function formatCreators(creators) {
+  if (!creators || creators.length === 0) {
+    return '';
+  }
+
+  return creators
+    .map(creator => {
+      if (creator.name) {
+        return escapeHtml(creator.name);
+      }
+
+      return [creator.firstName, creator.lastName]
+        .filter(Boolean)
+        .map(escapeHtml)
+        .join(' ');
+    })
+    .filter(Boolean)
+    .join('; ');
+}
+
+function formatUrl(url) {
+  if (!hasRenderableValue(url)) {
+    return '';
+  }
+
+  const safeUrl = escapeHtml(url);
+
+  return `
+    <p>
+      <strong>${RECORD_FIELD_LABELS.url}:</strong>
+      <a href="${safeUrl}" target="_blank" rel="noopener noreferrer">
+        ${safeUrl}
+      </a>
+    </p>
+  `;
+}
+
+function formatTags(tags) {
+  if (!tags || tags.length === 0) {
+    return '';
+  }
+
+  const tagButtons = tags
+    .map(tagObject => {
+      const tag = tagObject.tag || '';
+
+      if (!tag) {
+        return '';
+      }
+
+      const encodedTag = encodeURIComponent(tag);
+      const safeTag = escapeHtml(tag);
+
+      return `<button type="button" onclick="window.location.href='${BASE_URL}/tag/?name=${encodedTag}'">${safeTag}</button>`;
+    })
+    .filter(Boolean)
+    .join(' ');
+
+  if (!tagButtons) {
+    return '';
+  }
+
+  return `
+    <p>
+      <em>Explore this topic across all collections:</em><br>
+      ${tagButtons}
+    </p>
+  `;
+}
+
+function formatSimpleField(fieldName, value) {
+  if (!hasRenderableValue(value)) {
+    return '';
+  }
+
+  const label = RECORD_FIELD_LABELS[fieldName] || fieldName;
+
+  return `
+    <p>
+      <strong>${escapeHtml(label)}:</strong>
+      ${escapeHtml(value)}
+    </p>
+  `;
+}
+
+function renderRecordField(fieldName, normalizedRecord) {
+  if (fieldName === 'title') {
+    return '';
+  }
+
+  if (fieldName === 'zoteroKey' && !SHOW_ZOTERO_KEY) {
+    return '';
+  }
+
+  const value = normalizedRecord[fieldName];
+
+  if (!hasRenderableValue(value)) {
+    return '';
+  }
+
+  if (fieldName === 'creators') {
+    const creators = formatCreators(value);
+    return creators ? formatSimpleField('creators', creators) : '';
+  }
+
+  if (fieldName === 'url') {
+    return formatUrl(value);
+  }
+
+  if (fieldName === 'tags') {
+    return formatTags(value);
+  }
+
+  if (fieldName === 'abstract') {
+    return `
+      <p>
+        <strong>${RECORD_FIELD_LABELS.abstract}:</strong>
+        ${escapeHtml(value)}
+      </p>
+    `;
+  }
+
+  return formatSimpleField(fieldName, value);
+}
+
+function renderBibliographyRecord(item) {
+  const normalizedRecord = normalizeZoteroRecord(item);
+  const displayFields = Array.isArray(RECORD_DISPLAY_FIELDS)
+    ? RECORD_DISPLAY_FIELDS
+    : String(RECORD_DISPLAY_FIELDS).split(',').map(field => field.trim()).filter(Boolean);
+
+  let html = `
+    <article class="bib-record" data-zotero-key="${escapeHtml(normalizedRecord.zoteroKey)}">
+      <h2>${escapeHtml(normalizedRecord.title || 'Untitled')}</h2>
+  `;
+
+  displayFields.forEach(fieldName => {
+    html += renderRecordField(fieldName, normalizedRecord);
+  });
+
+  html += `
+      <hr>
+    </article>
+  `;
+
+  return html;
+}
