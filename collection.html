@@ -15,32 +15,27 @@ const params = new URLSearchParams(window.location.search);
 const collectionKey = params.get('key');
 
 let allItems = [];
+let allCollections = [];
 let currentCollectionName = '';
 let currentTagFilter = '';
 let currentSort = 'title';
 
+{% include zotero-data-loader.html %}
 {% include bibliography-record-renderer.html %}
 
-async function fetchAllCollectionItems(collectionKey) {
-  const limit = 100;
-  let start = 0;
-  let allItems = [];
+function findCollectionName(collections, key) {
+  const collection = collections.find(collection => collection.key === key);
 
-  while (true) {
-    const url = `https://api.zotero.org/groups/6606998/collections/${collectionKey}/items/top?format=json&limit=${limit}&start=${start}`;
-    const response = await fetch(url);
-    const items = await response.json();
-
-    allItems = allItems.concat(items);
-
-    if (items.length < limit) {
-      break;
-    }
-
-    start += limit;
+  if (!collection) {
+    return 'Unknown Collection';
   }
 
-  return allItems;
+  return collection.data.name || 'Unnamed Collection';
+}
+
+function itemBelongsToCollection(item, key) {
+  const collections = item.data.collections || [];
+  return collections.includes(key);
 }
 
 function buildControls() {
@@ -135,6 +130,10 @@ function render() {
 
   let html = `<p><strong>Records:</strong> ${items.length}</p>`;
 
+  if (items.length === 0) {
+    html += '<p>No records found in this collection.</p>';
+  }
+
   items.forEach(item => {
     html += renderBibliographyRecord(item);
   });
@@ -147,13 +146,17 @@ if (!collectionKey) {
   document.getElementById('collection-records').innerHTML = '<p>Please select a collection from the home page.</p>';
 } else {
   Promise.all([
-    fetch(`https://api.zotero.org/groups/6606998/collections/${collectionKey}?format=json`).then(response => response.json()),
-    fetchAllCollectionItems(collectionKey)
+    loadZoteroItems(),
+    loadZoteroCollections()
   ])
-  .then(([collection, items]) => {
-    currentCollectionName = collection.data.name || 'Unnamed Collection';
+  .then(([items, collections]) => {
+    allCollections = collections;
+    currentCollectionName = findCollectionName(collections, collectionKey);
+
     document.getElementById('collection-title').textContent = currentCollectionName;
-    allItems = items;
+
+    allItems = items.filter(item => itemBelongsToCollection(item, collectionKey));
+
     render();
   })
   .catch(error => {
