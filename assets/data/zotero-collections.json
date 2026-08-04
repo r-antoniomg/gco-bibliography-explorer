@@ -1,0 +1,542 @@
+[
+  {
+    "key": "H7789WZB",
+    "version": 1483,
+    "library": {
+      "type": "group",
+      "id": 6606998,
+      "name": "GCO",
+      "links": {
+        "alternate": {
+          "href": "https://www.zotero.org/groups/gco",
+          "type": "text/html"
+        }
+      }
+    },
+    "links": {
+      "self": {
+        "href": "https://api.zotero.org/groups/6606998/collections/H7789WZB",
+        "type": "application/json"
+      },
+      "alternate": {
+        "href": "https://www.zotero.org/groups/gco/collections/H7789WZB",
+        "type": "text/html"
+      }
+    },
+    "meta": {
+      "numCollections": 0,
+      "numItems": 900
+    },
+    "data": {
+      "key": "H7789WZB",
+      "version": 1483,
+      "name": "Books",
+      "parentCollection": false,
+      "relations": {}
+    }
+  },
+  {
+    "key": "LD5AW4U7",
+    "version": 780,
+    "library": {
+      "type": "group",
+      "id": 6606998,
+      "name": "GCO",
+      "links": {
+        "alternate": {
+          "href": "https://www.zotero.org/groups/gco",
+          "type": "text/html"
+        }
+      }
+    },
+    "links": {
+      "self": {
+        "href": "https://api.zotero.org/groups/6606998/collections/LD5AW4U7",
+        "type": "application/json"
+      },
+      "alternate": {
+        "href": "https://www.zotero.org/groups/gco/collections/LD5AW4U7",
+        "type": "text/html"
+      }
+    },
+    "meta": {
+      "numCollections": 0,
+      "numItems": 649
+    },
+    "data": {
+      "key": "LD5AW4U7",
+      "version": 780,
+      "name": "Journal articles",
+      "parentCollection": false,
+      "relations": {}
+    }
+  },
+  {
+    "key": "WRTJL2K3",
+    "version": 409,
+    "library": {
+      "type": "group",
+      "id": 6606998,
+      "name": "GCO",
+      "links": {
+        "alternate": {
+          "href": "https://www.zotero.org/groups/gco",
+          "type": "text/html"
+        }
+      }
+    },
+    "links": {
+      "self": {
+        "href": "https://api.zotero.org/groups/6606998/collections/WRTJL2K3",
+        "type": "application/json"
+      },
+      "alternate": {
+        "href": "https://www.zotero.org/groups/gco/collections/WRTJL2K3",
+        "type": "text/html"
+      }
+    },
+    "meta": {
+      "numCollections": 0,
+      "numItems": 298
+    },
+    "data": {
+      "key": "WRTJL2K3",
+      "version": 409,
+      "name": "Reports",
+      "parentCollection": false,
+      "relations": {}
+    }
+  },
+  {
+    "key": "QEJTTAMA",
+    "version": 186,
+    "library": {
+      "type": "group",
+      "id": 6606998,
+      "name": "GCO",
+      "links": {
+        "alternate": {
+          "href": "https://www.zotero.org/groups/gco",
+          "type": "text/html"
+        }
+      }
+    },
+    "links": {
+      "self": {
+        "href": "https://api.zotero.org/groups/6606998/collections/QEJTTAMA",
+        "type": "application/json"
+      },
+      "alternate": {
+        "href": "https://www.zotero.org/groups/gco/collections/QEJTTAMA",
+        "type": "text/html"
+      }
+    },
+    "meta": {
+      "numCollections": 0,
+      "numItems": 152
+    },
+    "data": {
+      "key": "QEJTTAMA",
+      "version": 186,
+      "name": "Book chapters",
+      "parentCollection": false,
+      "relations": {}
+    }
+  },
+  {
+    "key": "Y3X5AICN",
+    "version": 85,
+    "library": {
+      "type": "group",
+      "id": 6606998,
+      "name": "GCO",
+      "links": {
+        "alternate": {
+          "href": "https://www.zotero.org/groups/gco",
+          "type": "text/html"
+        }
+      }
+    },
+    "links": {
+      "self": {
+        "href": "https://api.zotero.org/groups/6606998/collections/Y3X5AICN",
+        "type": "application/json"
+      },
+      "alternate": {
+        "href": "https://www.zotero.org/groups/gco/collections/Y3X5AICN",
+        "type": "text/html"
+      }
+    },
+    "meta": {
+      "numCollections": 0,
+      "numItems": 96
+    },
+    "data": {
+      "key": "Y3X5AICN",
+      "version": 85,
+      "name": "Theses",
+      "parentCollection": false,
+      "relations": {}
+    }
+  },
+  {
+    "key": "55YYSFQM",
+    "version": 61,
+    "library": {
+      "type": "group",
+      "id": 6606998,
+      "name": "GCO",
+      "links": {
+        "alternate": {
+          "href": "https://www.zotero.org/groups/gco",
+          "type": "text/html"
+        }
+      }
+    },
+    "links": {
+      "self": {
+        "href": "https://api.zotero.org/groups/6606998/collections/55YYSFQM",
+        "type": "application/json"
+      },
+      "alternate": {
+        "href": "https://www.zotero.org/groups/gco/collections/55YYSFQM",
+        "type": "text/html"
+      }
+    },
+    "meta": {
+      "numCollections": 0,
+      "numItems": 23
+    },
+    "data": {
+      "key": "55YYSFQM",
+      "version": 61,
+      "name": "Serials (Monographs)",
+      "parentCollection": false,
+      "relations": {}
+    }
+  },
+  {
+    "key": "ZGZXFVFB",
+    "version": 42,
+    "library": {
+      "type": "group",
+      "id": 6606998,
+      "name": "GCO",
+      "links": {
+        "alternate": {
+          "href": "https://www.zotero.org/groups/gco",
+          "type": "text/html"
+        }
+      }
+    },
+    "links": {
+      "self": {
+        "href": "https://api.zotero.org/groups/6606998/collections/ZGZXFVFB",
+        "type": "application/json"
+      },
+      "alternate": {
+        "href": "https://www.zotero.org/groups/gco/collections/ZGZXFVFB",
+        "type": "text/html"
+      }
+    },
+    "meta": {
+      "numCollections": 0,
+      "numItems": 18
+    },
+    "data": {
+      "key": "ZGZXFVFB",
+      "version": 42,
+      "name": "Miscellaneous",
+      "parentCollection": false,
+      "relations": {}
+    }
+  },
+  {
+    "key": "8WQUPIS4",
+    "version": 28,
+    "library": {
+      "type": "group",
+      "id": 6606998,
+      "name": "GCO",
+      "links": {
+        "alternate": {
+          "href": "https://www.zotero.org/groups/gco",
+          "type": "text/html"
+        }
+      }
+    },
+    "links": {
+      "self": {
+        "href": "https://api.zotero.org/groups/6606998/collections/8WQUPIS4",
+        "type": "application/json"
+      },
+      "alternate": {
+        "href": "https://www.zotero.org/groups/gco/collections/8WQUPIS4",
+        "type": "text/html"
+      }
+    },
+    "meta": {
+      "numCollections": 0,
+      "numItems": 13
+    },
+    "data": {
+      "key": "8WQUPIS4",
+      "version": 28,
+      "name": "Magazine articles",
+      "parentCollection": false,
+      "relations": {}
+    }
+  },
+  {
+    "key": "4HXHNJ43",
+    "version": 22,
+    "library": {
+      "type": "group",
+      "id": 6606998,
+      "name": "GCO",
+      "links": {
+        "alternate": {
+          "href": "https://www.zotero.org/groups/gco",
+          "type": "text/html"
+        }
+      }
+    },
+    "links": {
+      "self": {
+        "href": "https://api.zotero.org/groups/6606998/collections/4HXHNJ43",
+        "type": "application/json"
+      },
+      "alternate": {
+        "href": "https://www.zotero.org/groups/gco/collections/4HXHNJ43",
+        "type": "text/html"
+      }
+    },
+    "meta": {
+      "numCollections": 0,
+      "numItems": 4
+    },
+    "data": {
+      "key": "4HXHNJ43",
+      "version": 22,
+      "name": "Film (Motion picture)",
+      "parentCollection": false,
+      "relations": {}
+    }
+  },
+  {
+    "key": "UZC4AFZP",
+    "version": 16,
+    "library": {
+      "type": "group",
+      "id": 6606998,
+      "name": "GCO",
+      "links": {
+        "alternate": {
+          "href": "https://www.zotero.org/groups/gco",
+          "type": "text/html"
+        }
+      }
+    },
+    "links": {
+      "self": {
+        "href": "https://api.zotero.org/groups/6606998/collections/UZC4AFZP",
+        "type": "application/json"
+      },
+      "alternate": {
+        "href": "https://www.zotero.org/groups/gco/collections/UZC4AFZP",
+        "type": "text/html"
+      }
+    },
+    "meta": {
+      "numCollections": 0,
+      "numItems": 4
+    },
+    "data": {
+      "key": "UZC4AFZP",
+      "version": 16,
+      "name": "Web project pages",
+      "parentCollection": false,
+      "relations": {}
+    }
+  },
+  {
+    "key": "LWALZ9ED",
+    "version": 13,
+    "library": {
+      "type": "group",
+      "id": 6606998,
+      "name": "GCO",
+      "links": {
+        "alternate": {
+          "href": "https://www.zotero.org/groups/gco",
+          "type": "text/html"
+        }
+      }
+    },
+    "links": {
+      "self": {
+        "href": "https://api.zotero.org/groups/6606998/collections/LWALZ9ED",
+        "type": "application/json"
+      },
+      "alternate": {
+        "href": "https://www.zotero.org/groups/gco/collections/LWALZ9ED",
+        "type": "text/html"
+      }
+    },
+    "meta": {
+      "numCollections": 0,
+      "numItems": 2
+    },
+    "data": {
+      "key": "LWALZ9ED",
+      "version": 13,
+      "name": "Electronic journals",
+      "parentCollection": false,
+      "relations": {}
+    }
+  },
+  {
+    "key": "SYFRSIB9",
+    "version": 10,
+    "library": {
+      "type": "group",
+      "id": 6606998,
+      "name": "GCO",
+      "links": {
+        "alternate": {
+          "href": "https://www.zotero.org/groups/gco",
+          "type": "text/html"
+        }
+      }
+    },
+    "links": {
+      "self": {
+        "href": "https://api.zotero.org/groups/6606998/collections/SYFRSIB9",
+        "type": "application/json"
+      },
+      "alternate": {
+        "href": "https://www.zotero.org/groups/gco/collections/SYFRSIB9",
+        "type": "text/html"
+      }
+    },
+    "meta": {
+      "numCollections": 0,
+      "numItems": 2
+    },
+    "data": {
+      "key": "SYFRSIB9",
+      "version": 10,
+      "name": "Journals",
+      "parentCollection": false,
+      "relations": {}
+    }
+  },
+  {
+    "key": "86FEB768",
+    "version": 7,
+    "library": {
+      "type": "group",
+      "id": 6606998,
+      "name": "GCO",
+      "links": {
+        "alternate": {
+          "href": "https://www.zotero.org/groups/gco",
+          "type": "text/html"
+        }
+      }
+    },
+    "links": {
+      "self": {
+        "href": "https://api.zotero.org/groups/6606998/collections/86FEB768",
+        "type": "application/json"
+      },
+      "alternate": {
+        "href": "https://www.zotero.org/groups/gco/collections/86FEB768",
+        "type": "text/html"
+      }
+    },
+    "meta": {
+      "numCollections": 0,
+      "numItems": 2
+    },
+    "data": {
+      "key": "86FEB768",
+      "version": 7,
+      "name": "Maps",
+      "parentCollection": false,
+      "relations": {}
+    }
+  },
+  {
+    "key": "K2XCN9LY",
+    "version": 5,
+    "library": {
+      "type": "group",
+      "id": 6606998,
+      "name": "GCO",
+      "links": {
+        "alternate": {
+          "href": "https://www.zotero.org/groups/gco",
+          "type": "text/html"
+        }
+      }
+    },
+    "links": {
+      "self": {
+        "href": "https://api.zotero.org/groups/6606998/collections/K2XCN9LY",
+        "type": "application/json"
+      },
+      "alternate": {
+        "href": "https://www.zotero.org/groups/gco/collections/K2XCN9LY",
+        "type": "text/html"
+      }
+    },
+    "meta": {
+      "numCollections": 0,
+      "numItems": 1
+    },
+    "data": {
+      "key": "K2XCN9LY",
+      "version": 5,
+      "name": "Conference proceedings",
+      "parentCollection": false,
+      "relations": {}
+    }
+  },
+  {
+    "key": "5AKRR4NE",
+    "version": 2,
+    "library": {
+      "type": "group",
+      "id": 6606998,
+      "name": "GCO",
+      "links": {
+        "alternate": {
+          "href": "https://www.zotero.org/groups/gco",
+          "type": "text/html"
+        }
+      }
+    },
+    "links": {
+      "self": {
+        "href": "https://api.zotero.org/groups/6606998/collections/5AKRR4NE",
+        "type": "application/json"
+      },
+      "alternate": {
+        "href": "https://www.zotero.org/groups/gco/collections/5AKRR4NE",
+        "type": "text/html"
+      }
+    },
+    "meta": {
+      "numCollections": 0,
+      "numItems": 1
+    },
+    "data": {
+      "key": "5AKRR4NE",
+      "version": 2,
+      "name": "Sound",
+      "parentCollection": false,
+      "relations": {}
+    }
+  }
+]

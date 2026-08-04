@@ -1,0 +1,16 @@
+{
+  "generated_at_utc": "2026-08-04T14:30:59+00:00",
+  "source": "https://api.zotero.org/groups/6606998",
+  "group_id": "6606998",
+  "api_version": "3",
+  "items_file": "assets/data/zotero-items.json",
+  "collections_file": "assets/data/zotero-collections.json",
+  "item_count": 2165,
+  "collection_count": 15,
+  "cache_type": "raw_zotero_api_json",
+  "notes": [
+    "This cache stores raw Zotero API response records.",
+    "Display normalization is handled by the site renderer and page scripts.",
+    "Regenerate this cache after updating the Zotero library if the public site should reflect new data."
+  ]
+}
