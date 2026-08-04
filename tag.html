@@ -14,7 +14,6 @@ nav_exclude: true
 <script>
 const params = new URLSearchParams(window.location.search);
 const tagName = params.get('name');
-const BASE_URL = '{{ site.baseurl }}';
 
 {% include zotero-data-loader.html %}
 {% include bibliography-record-renderer.html %}
