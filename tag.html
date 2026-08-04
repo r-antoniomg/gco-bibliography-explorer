@@ -14,30 +14,10 @@ nav_exclude: true
 <script>
 const params = new URLSearchParams(window.location.search);
 const tagName = params.get('name');
+const BASE_URL = '{{ site.baseurl }}';
 
+{% include zotero-data-loader.html %}
 {% include bibliography-record-renderer.html %}
-
-async function fetchAllTopItems() {
-  const limit = 100;
-  let start = 0;
-  let allItems = [];
-
-  while (true) {
-    const url = `https://api.zotero.org/groups/6606998/items/top?format=json&limit=${limit}&start=${start}`;
-    const response = await fetch(url);
-    const items = await response.json();
-
-    allItems = allItems.concat(items);
-
-    if (items.length < limit) {
-      break;
-    }
-
-    start += limit;
-  }
-
-  return allItems;
-}
 
 if (!tagName) {
   document.getElementById('tag-title').textContent = 'No tag specified';
@@ -47,12 +27,14 @@ if (!tagName) {
 
   document.getElementById('tag-title').textContent = `Tag: ${normalizedTagName}`;
 
-  fetchAllTopItems()
+  loadZoteroItems()
     .then(items => {
       const matchingItems = items.filter(item => {
         const tags = item.data.tags || [];
 
-        return tags.some(t => normalizeTag(t.tag) === normalizedTagName);
+        return tags.some(
+          t => normalizeTag(t.tag) === normalizedTagName
+        );
       });
 
       let html = `
