@@ -3,7 +3,7 @@ layout: default
 title: Home
 ---
 
-# German Canadiana Online (GCO) Bibliography
+# German Canadiana in Ontario (GCO) Bibliography
 
 The German Canadiana in Ontario Bibliography (GCO) was started in 2007 and is a project of the University of Waterloo Libraries. It is updated continuously, as new information becomes available.
 
@@ -59,77 +59,53 @@ The German Canadiana in Ontario Bibliography (GCO) was started in 2007 and is a 
 </style>
 
 <script>
-const COLLECTIONS_URL = 'https://api.zotero.org/groups/6606998/collections?format=json&limit=100';
 const BASE_URL = '{{ site.baseurl }}';
 
-async function fetchAllCollectionItems(collectionKey) {
-  const limit = 100;
-  let start = 0;
-  let allItems = [];
+{% include zotero-data-loader.html %}
 
-  while (true) {
-    const url = `https://api.zotero.org/groups/6606998/collections/${collectionKey}/items/top?format=json&limit=${limit}&start=${start}`;
-
-    const response = await fetch(url);
-    const items = await response.json();
-
-    allItems = allItems.concat(items);
-
-    if (items.length < limit) {
-      break;
-    }
-
-    start += limit;
-  }
-
-  return allItems;
+function countItemsInCollection(items, collectionKey) {
+  return items.filter(item => {
+    const collections = item.data.collections || [];
+    return collections.includes(collectionKey);
+  }).length;
 }
 
-fetch(COLLECTIONS_URL)
-  .then(response => response.json())
-  .then(collections => {
-
+Promise.all([
+  loadZoteroCollections(),
+  loadZoteroItems()
+])
+  .then(([collections, items]) => {
     const gridClass = collections.length <= 4 ? 'two-col' : 'three-col';
 
-    const requests = collections.map(collection => {
-      const key = collection.key;
+    let html = `<div class="collection-grid ${gridClass}">`;
 
-      return fetchAllCollectionItems(key)
-        .then(items => ({
-          name: collection.data.name,
-          key: key,
-          count: items.length
-        }));
-    });
-
-    Promise.all(requests).then(results => {
-
-      let html = `<div class="collection-grid ${gridClass}">`;
-
-      results.forEach(collection => {
-        html += `
-          <a class="collection-card" href="${BASE_URL}/collection/?key=${collection.key}">
-            <div class="collection-title">${collection.name}</div>
-            <div class="collection-count">Item count: ${collection.count}</div>
-          </a>`;
-      });
-
-      html += '</div>';
+    collections.forEach(collection => {
+      const collectionName = collection.data.name || 'Unnamed Collection';
+      const collectionKey = collection.key;
+      const itemCount = countItemsInCollection(items, collectionKey);
 
       html += `
-        <div style="margin-top: 2rem;">
-          <a class="collection-card" href="${BASE_URL}/topics/">
-            <div class="collection-title">
-              Explore the Bibliography by Topic
-            </div>
-            <div class="collection-count">
-              Browse records across all collections using topic tags.
-            </div>
-          </a>
-        </div>`;
-
-      document.getElementById('collection-gallery').innerHTML = html;
+        <a class="collection-card" href="${BASE_URL}/collection/?key=${collectionKey}">
+          <div class="collection-title">${collectionName}</div>
+          <div class="collection-count">Item count: ${itemCount}</div>
+        </a>`;
     });
+
+    html += '</div>';
+
+    html += `
+      <div style="margin-top: 2rem;">
+        <a class="collection-card" href="${BASE_URL}/topics/">
+          <div class="collection-title">
+            Explore the Bibliography by Topic
+          </div>
+          <div class="collection-count">
+            Browse records across all collections using topic tags.
+          </div>
+        </a>
+      </div>`;
+
+    document.getElementById('collection-gallery').innerHTML = html;
   })
   .catch(error => {
     document.getElementById('collection-gallery').innerHTML = '<p>Error loading collections.</p>';
