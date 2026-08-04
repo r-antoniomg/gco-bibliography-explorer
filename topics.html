@@ -4,7 +4,7 @@ title: Topics
 permalink: /topics/
 ---
 
-<h1>Explore the Bibliography by Topic</h1>
+<h1>Explore the GCO by topic</h1>
 
 <p>
 Browse records across all collections using topic tags derived from the Zotero library.
@@ -32,37 +32,16 @@ Tag size reflects the number of records associated with the topic.
 <script>
 const BASE_URL = '{{ site.baseurl }}';
 
+{% include zotero-data-loader.html %}
+
 function normalizeTag(tag) {
   return String(tag || '')
     .trim()
     .replace(/\s+/g, ' ');
 }
 
-async function fetchAllTopItems() {
-  const limit = 100;
-  let start = 0;
-  let allItems = [];
-
-  while (true) {
-    const url = `https://api.zotero.org/groups/6606998/items/top?format=json&limit=${limit}&start=${start}`;
-    const response = await fetch(url);
-    const items = await response.json();
-
-    allItems = allItems.concat(items);
-
-    if (items.length < limit) {
-      break;
-    }
-
-    start += limit;
-  }
-
-  return allItems;
-}
-
-fetchAllTopItems()
+loadZoteroItems()
   .then(items => {
-
     const tagCounts = {};
 
     items.forEach(item => {
@@ -91,7 +70,6 @@ fetchAllTopItems()
     let html = '<div class="topic-cloud">';
 
     sortedTags.forEach(([tag, count]) => {
-
       const size = 0.9 + ((count / maxCount) * 1.2);
       const encodedTag = encodeURIComponent(tag);
 
