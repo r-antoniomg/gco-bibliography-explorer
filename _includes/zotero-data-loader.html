@@ -1,0 +1,103 @@
+/*
+  Zotero data loader
+  ------------------
+  Cache-first data loading helper for Zotero bibliography pages.
+
+  Include inside a <script> block before page-specific code:
+
+  {% include zotero-data-loader.html %}
+
+  The loader tries local cache files first:
+
+    assets/data/zotero-items.json
+    assets/data/zotero-collections.json
+
+  If cached files are unavailable, it falls back to the live Zotero API.
+*/
+
+const ZOTERO_GROUP_ID = '{{ site.zotero.group_id | default: "6606998" }}';
+const ZOTERO_API_BASE = 'https://api.zotero.org';
+const ZOTERO_API_LIMIT = 100;
+
+async function fetchJson(url) {
+  const response = await fetch(url);
+
+  if (!response.ok) {
+    throw new Error(`Fetch failed: ${response.status} ${response.statusText} for ${url}`);
+  }
+
+  return await response.json();
+}
+
+async function fetchAllLiveTopItems() {
+  let start = 0;
+  let allItems = [];
+
+  while (true) {
+    const url = `${ZOTERO_API_BASE}/groups/${ZOTERO_GROUP_ID}/items/top?format=json&limit=${ZOTERO_API_LIMIT}&start=${start}`;
+    const items = await fetchJson(url);
+
+    allItems = allItems.concat(items);
+
+    if (items.length < ZOTERO_API_LIMIT) {
+      break;
+    }
+
+    start += ZOTERO_API_LIMIT;
+  }
+
+  return allItems;
+}
+
+async function fetchAllLiveCollections() {
+  let start = 0;
+  let allCollections = [];
+
+  while (true) {
+    const url = `${ZOTERO_API_BASE}/groups/${ZOTERO_GROUP_ID}/collections?format=json&limit=${ZOTERO_API_LIMIT}&start=${start}`;
+    const collections = await fetchJson(url);
+
+    allCollections = allCollections.concat(collections);
+
+    if (collections.length < ZOTERO_API_LIMIT) {
+      break;
+    }
+
+    start += ZOTERO_API_LIMIT;
+  }
+
+  return allCollections;
+}
+
+async function loadZoteroItems() {
+  const cacheUrl = `${BASE_URL}/assets/data/zotero-items.json`;
+
+  try {
+    return await fetchJson(cacheUrl);
+  } catch (error) {
+    console.warn('Cached Zotero items unavailable. Falling back to live Zotero API.', error);
+    return await fetchAllLiveTopItems();
+  }
+}
+
+async function loadZoteroCollections() {
+  const cacheUrl = `${BASE_URL}/assets/data/zotero-collections.json`;
+
+  try {
+    return await fetchJson(cacheUrl);
+  } catch (error) {
+    console.warn('Cached Zotero collections unavailable. Falling back to live Zotero API.', error);
+    return await fetchAllLiveCollections();
+  }
+}
+
+async function loadZoteroCacheMetadata() {
+  const cacheUrl = `${BASE_URL}/assets/data/zotero-cache-metadata.json`;
+
+  try {
+    return await fetchJson(cacheUrl);
+  } catch (error) {
+    console.warn('Cached Zotero metadata unavailable.', error);
+    return null;
+  }
+}
